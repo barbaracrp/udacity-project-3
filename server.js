@@ -1,5 +1,7 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+const projectData = {
+  tempEntry: []
+};
 
 // Require Express to run server and routes
 const express = require('express'); //importando o express
@@ -31,14 +33,24 @@ function listening(){
 };
 
 //GET route
-app.get('/', sendData);
-
-function sendData(request, response){
-  res.send()
+// There should be a GET route setup on the server side with the first argument as a string naming the route,
+//and the second argument a callback function to return the JS object created at the top of server code.
+app.get('/all', sendData);
+function sendData(req, res) {
+  res.send(projectData);
 };
 
 //POST route
-app.post('/add', addData);
-function addData(req, res){
-  res.send('POST received');
-}
+//You should be able to add an entry to the project endpoint using a POST route setup on the server side
+//and executed on the client side as an asynchronous function.
+//The server side function should create a new entry in the apps endpoint (the named JS object) consisting
+//of the data received from the client side POST.
+app.post('/add', function addData(req, res) {
+  const newEntry = {
+    "date" : req.body.date,
+    "temp" : req.body.temp,
+    "feelings" : req.body.feelings,
+  };
+  projectData.tempEntry.push(newEntry);
+  res.send(projectData.tempEntry);
+});
